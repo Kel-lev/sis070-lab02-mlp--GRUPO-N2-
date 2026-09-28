@@ -189,19 +189,70 @@ if __name__ == "__main__":
         print(f"  Pérdida final: {losses[-1]:.6f}")
         print(f"  Predicciones: {preds}")
 
-    # ---------------------------------------------------------
-    # ACTIVIDAD 3: Ampliación Arquitectural (4 capas)
+        # ---------------------------------------------------------
+    # ACTIVIDAD 3: Comparación de Arquitecturas
     # ---------------------------------------------------------
     print("\n" + "=" * 65)
-    print("  ACTIVIDAD 3: MLP de 4 capas (2 -> 4 -> 4 -> 1)")
+    print("  ACTIVIDAD 3: Comparación de Arquitecturas")
     print("=" * 65)
 
+    # ---------------------------------------------------------
+    # MLP DE 3 CAPAS: 2 -> 4 -> 1
+    # ---------------------------------------------------------
+    print("\n>>> MLP de 3 capas: 2 -> 4 -> 1 <<<")
+
     np.random.seed(42)
-    deep = DeepMLP(2, 4, 4, 1, activation='sigmoid')
-    losses = deep.train(X, y, learning_rate=0.5, epochs=5000, verbose=True)
-    preds = np.round(deep.forward(X)).flatten()
-    print(f"  Pérdida final: {losses[-1]:.6f}")
-    print(f"  Predicciones: {preds}")
+    mlp_3_capas = SimpleMLP(2, 4, 1, activation='sigmoid')
+
+    losses_3 = mlp_3_capas.train(
+        X,
+        y,
+        learning_rate=0.5,
+        epochs=5000,
+        verbose=True
+    )
+
+    preds_3 = np.round(mlp_3_capas.forward(X)).flatten()
+
+    print(f"  Pérdida final: {losses_3[-1]:.6f}")
+    print(f"  Predicciones: {preds_3}")
+
+    # ---------------------------------------------------------
+    # MLP DE 4 CAPAS: 2 -> 4 -> 4 -> 1
+    # ---------------------------------------------------------
+    print("\n>>> MLP de 4 capas: 2 -> 4 -> 4 -> 1 <<<")
+
+    np.random.seed(42)
+    mlp_4_capas = DeepMLP(2, 4, 4, 1, activation='sigmoid')
+
+    losses_4 = mlp_4_capas.train(
+        X,
+        y,
+        learning_rate=0.5,
+        epochs=5000,
+        verbose=True
+    )
+
+    preds_4 = np.round(mlp_4_capas.forward(X)).flatten()
+
+    print(f"  Pérdida final: {losses_4[-1]:.6f}")
+    print(f"  Predicciones: {preds_4}")
+
+    # ---------------------------------------------------------
+    # COMPARACIÓN FINAL
+    # ---------------------------------------------------------
+    print("\n" + "-" * 65)
+    print("  COMPARACIÓN DE RESULTADOS")
+    print("-" * 65)
+
+    print(f"  3 capas (2 -> 4 -> 1):")
+    print(f"    Pérdida final: {losses_3[-1]:.6f}")
+    print(f"    Predicciones: {preds_3}")
+
+    print(f"\n  4 capas (2 -> 4 -> 4 -> 1):")
+    print(f"    Pérdida final: {losses_4[-1]:.6f}")
+    print(f"    Predicciones: {preds_4}")
+
 
     print("\n" + "=" * 65)
     print("  FIN DEL LABORATORIO")

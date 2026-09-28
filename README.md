@@ -1,5 +1,12 @@
 # SIS070 - Laboratorio 04: El Perceptrón Multicapa (MLP) y Backpropagation desde Cero
 
+## Datos generales
+
+- **Estudiantes:** Leva Ayte, Kelma Ivonne / Delgado Ccorihuaman, Hamlet Nayeli
+- **Asignatura:** Inteligencia Artificial
+- **Tema:** Perceptrón Multicapa (MLP) y Backpropagation
+- **Docente:** Lazo Mamani, Juan Carlos
+
 ## Descripción
 
 En este laboratorio se implementó desde cero un Perceptrón Multicapa (MLP) utilizando únicamente Python y NumPy, sin emplear librerías especializadas de aprendizaje automático.
@@ -29,6 +36,9 @@ sis070-lab02-mlp-leva-delgado/
 ├── README.md                    # Documentación y análisis
 │
 └── requirements.txt             # Dependencias del proyecto
+└── img1.png                     # Resultados
+└── img2.png                     # Resultados
+└── img3.png                     # Resultados
 ```
 
 ---
@@ -42,14 +52,7 @@ sis070-lab02-mlp-leva-delgado/
 
 ### Instalación
 
-Primero se debe clonar el repositorio:
-
-```bash
-git clone https://github.com/TU_USUARIO/sis070-lab02-mlp-leva-delgado.git
-cd sis070-lab02-mlp-leva-delgado
-```
-
-Luego se instalan las dependencias:
+Primero se instalan las dependencias:
 
 ```bash
 pip install -r requirements.txt
@@ -67,7 +70,7 @@ python src/mlp_implementation.py
 
 ### 1. Funciones de activación
 
-En la implementación se utilizaron dos funciones de activación: ReLU y Sigmoide. Cada una cuenta con su respectiva derivada, necesaria durante el proceso de retropropagación.
+En la implementación se utilizaron dos funciones de activación: ReLU y Sigmoide. Cada una cuenta con su respectiva derivada, esto es necesario durante el proceso de retropropagación.
 
 #### ReLU
 
@@ -84,7 +87,7 @@ ReLU'(z) = 1, si z > 0
            0, si z ≤ 0
 ```
 
-Esta función permite introducir no linealidad en la red y, para valores positivos, mantiene un gradiente constante.
+Esta función permite introducir no linealidad en la red y para valores positivos mantiene un gradiente constante.
 
 #### Sigmoide
 
@@ -116,47 +119,94 @@ La red recibe las dos variables de entrada del problema XOR y utiliza cuatro neu
 
 #### Método forward(X)
 
-Este método realiza la propagación hacia adelante.
+El método realiza la **propagación hacia adelante**, es decir, el proceso mediante el cual los datos pasan desde la entrada hasta la salida de la red neuronal.
+
 
 Primero se calcula:
+Donde:
+
+X: contiene los datos de entrada de la red.
+
+W1: contiene los pesos que conectan la capa de entrada con la capa oculta.
+
+b1: contiene los sesgos de las neuronas de la capa oculta.
+
+Z1: representa la combinación lineal obtenida antes de aplicar la función
 
 ```
 Z1 = X · W1 + b1
 ```
 
 Después se aplica la función de activación para obtener:
+Donde:
+
+Z1: es el resultado de la combinación lineal anterior.
+
+A1: representa las activaciones de las neuronas de la capa oculta después de aplicar ReLU o Sigmoide.
 
 ```
 A1 = activación(Z1)
 ```
 
 Posteriormente, la información de la capa oculta se utiliza para calcular la salida:
+Donde:
+
+A1: contiene las salidas de las neuronas de la capa oculta.
+
+W2: contiene los pesos que conectan la capa oculta con la capa de salida.
+
+b2: contiene el sesgo de la neurona de salida.
+
+Z2: representa el valor obtenido en la capa de salida antes de aplicar la función de activación.
 
 ```
 Z2 = A1 · W2 + b2
 ```
 
 Finalmente:
+Donde:
+
+Z2: es el resultado de la combinación lineal de la capa de salida.
+
+A2: es el resultado final de la red después de aplicar la función Sigmoide. En este caso, representa la predicción de la red, con un valor entre 0 y 1.
 
 ```
 A2 = sigmoid(Z2)
 ```
 
-A2 corresponde a la predicción de la red.
-
 #### Método compute_loss(y, ŷ)
 
-Para medir el error entre las predicciones y los valores reales se utilizó el Error Cuadrático Medio (MSE):
+Este método se utiliza para medir qué tan diferentes son las predicciones realizadas por la red respecto a los valores reales.
+
+En este laboratorio se utilizó el **Error Cuadrático Medio (MSE, Mean Squared Error)**, cuya fórmula es:
 
 ```
 MSE = (1/n) Σ(y - ŷ)²
 ```
+Donde:
+
+y: representa los valores reales o esperados.
+
+ŷ: representa las predicciones realizadas por la red.
+
+n: representa el número de ejemplos utilizados.
+
+y - ŷ: representa la diferencia entre el valor real y la predicción.
+
+(y - ŷ)²: eleva la diferencia al cuadrado para evitar que los errores positivos y negativos se cancelen.
+
+Σ: indica que se suman los errores de todos los ejemplos.
+
+1/n: permite obtener el promedio de los errores.
 
 Una pérdida menor indica que las predicciones de la red están más próximas a los valores esperados.
 
+
 #### Método backward(X, y, lr)
 
-Este método implementa la retropropagación del error.
+Este método implementa la retropropagación del error (*Backpropagation*). 
+Su objetivo es determinar cuánto contribuyó cada peso y cada sesgo al error obtenido en la predicción, para posteriormente realizar los ajustes necesarios.
+
 
 Durante este proceso se calculan los gradientes correspondientes a:
 
@@ -164,6 +214,15 @@ Durante este proceso se calculan los gradientes correspondientes a:
 - db1
 - dW2
 - db2
+
+Donde:
+dW2: indica cómo influye cada peso de la conexión entre la capa oculta y la capa de salida en el error.
+
+db2: indica cómo influye el sesgo de la capa de salida en el error.
+
+dW1: indica cómo influyen los pesos de la conexión entre la capa de entrada y la capa oculta en el error.
+
+db1: indica cómo influyen los sesgos de la capa oculta en el erro
 
 Estos gradientes indican cómo deben modificarse los parámetros de la red para reducir el error.
 
@@ -174,7 +233,16 @@ W = W - lr · dW
 b = b - lr · db
 ```
 
-donde lr representa la tasa de aprendizaje (learning rate).
+Donde: 
+W: representa los pesos de la red.
+
+b: representa los sesgos.
+
+dW: representa el gradiente de los pesos.
+
+db: representa el gradiente de los sesgos.
+
+lr: representa la tasa de aprendizaje (learning rate).
 
 #### Método train(X, y, lr, epochs)
 
@@ -239,7 +307,19 @@ Este proceso se repite hasta alcanzar el número de épocas establecido.
 
 ---
 
-## 🧪 Resultados de las Actividades Prácticas
+## Resultados de las Actividades Prácticas
+
+### Actividad 1
+
+![r1](/img1.png)
+
+### Actividad 2
+
+![r2](/img2.png)
+
+### Actividad 3
+
+![r3](/img3.png)
 
 ### Actividad 1: Modificación del learning rate
 
@@ -378,13 +458,4 @@ A partir de los experimentos realizados se obtuvieron las siguientes conclusione
 5. **La inicialización de los pesos influye en el resultado.**
    Al utilizar una semilla fija (seed = 42), los experimentos pueden reproducirse bajo las mismas condiciones. Sin embargo, diferentes inicializaciones pueden producir trayectorias de entrenamiento y resultados distintos.
 
-6. **La implementación permitió comprender el funcionamiento interno de un MLP.**
-   Al implementar manualmente el forward propagation, el cálculo de la pérdida, el backpropagation y el descenso de gradiente, se pudo observar directamente cómo los pesos y sesgos se modifican durante el aprendizaje.
-
 ---
-
-## Autor
-
-- **Estudiantes:** Leva Ayte, Kelma Ivonne / Delgado Ccorihuaman, Hamlet Nayeli
-- **Curso:** Inteligencia Artificial
-- **Docente:** Lazo Mamani, Juan Carlos
