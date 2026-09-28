@@ -35,9 +35,9 @@ sis070-lab02-mlp-leva-delgado/
 │
 ├── README.md                    # Documentación y análisis
 │
-└── requirements.txt             # Dependencias del proyecto
-└── img1.png                     # Resultados
-└── img2.png                     # Resultados
+├── requirements.txt             # Dependencias del proyecto
+├── img1.png                     # Resultados
+├── img2.png                     # Resultados
 └── img3.png                     # Resultados
 ```
 
